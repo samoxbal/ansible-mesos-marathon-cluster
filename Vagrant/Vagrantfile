@@ -6,17 +6,21 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
+  config.hostmanager.enabled = true
+  config.hostmanager.manage_host = true
+  config.hostmanager.manage_guest = true
+  config.hostmanager.ignore_private_ip = false
+  config.hostmanager.include_offline = true
+
   config.vm.define "vm1" do |vm1|
     vm1.vm.box = "ubuntu/trusty64"
     vm1.vm.hostname = 'vm1'
-    vm1.vm.box_url = "vm1_box"
     vm1.vm.network "private_network", ip: "192.168.33.10"
   end
 
   config.vm.define "vm2" do |vm2|
     vm2.vm.box = "ubuntu/trusty64"
     vm2.vm.hostname = 'vm2'
-    vm2.vm.box_url = "vm2_box"
     vm2.vm.network "private_network", ip: "192.168.33.11"
   end
 end
