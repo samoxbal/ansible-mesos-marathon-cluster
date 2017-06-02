@@ -12,24 +12,26 @@ Vagrant.configure("2") do |config|
   config.hostmanager.ignore_private_ip = false
   config.hostmanager.include_offline = true
 
+  config.vm.box = "ubuntu/trusty64"
+  config.vm.memory = 1536
+
   config.vm.define "vm1" do |vm1|
-    vm1.vm.box = "ubuntu/trusty64"
     vm1.vm.hostname = 'vm1'
-    vm1.memory = 1536
     vm1.vm.network "private_network", ip: "192.168.33.10"
   end
 
   config.vm.define "vm2" do |vm2|
-    vm2.vm.box = "ubuntu/trusty64"
     vm2.vm.hostname = 'vm2'
-    vm2.memory = 1536
     vm2.vm.network "private_network", ip: "192.168.33.11"
   end
 
   config.vm.define "vm3" do |vm3|
-    vm3.vm.box = "ubuntu/trusty64"
     vm3.vm.hostname = 'vm3'
-    vm3.memory = 1536
     vm3.vm.network "private_network", ip: "192.168.33.12"
+  end
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "ansible/vagrant.yml"
+    ansible.sudo = true
   end
 end
