@@ -2,3 +2,4 @@
   become: yes
   roles:
     - java-8
+    - zookeeper
