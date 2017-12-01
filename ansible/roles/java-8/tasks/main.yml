@@ -1,11 +1,17 @@
 - name: Install java 8 preresequesits
-  apt: name=python-software-properties
+  apt: name=python-software-properties state=latest update_cache=yes
 
 - name: Add Java 8 repository
   apt_repository: repo='ppa:webupd8team/java'
 
 - name: Agree to oracle license
-  debconf: name=oracle-java8-installer question=shared/accepted-oracle-license-v1-1 vtype=select value=true
+  action: shell echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+
+- name: Update apt package cache
+  action: apt update_cache=yes
 
 - name: Install Java 8
   apt: name=oracle-java8-installer force=yes
+
+- name: Set Java 8 env
+  action: apt pkg=oracle-java8-set-default state=latest install_recommends=yes

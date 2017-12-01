@@ -1,5 +1,21 @@
+---
 - hosts: all
+  remote_user: vagrant
   become: yes
+  become_method: sudo
   roles:
     - java-8
+
+- hosts: master
+  remote_user: vagrant
+  become: yes
+  become_method: sudo
+  roles:
     - zookeeper
+    - mesos
+    - marathon
+
+- hosts: nodes
+  remote_user: vagrant
+  become: yes
+  become_method: sudo

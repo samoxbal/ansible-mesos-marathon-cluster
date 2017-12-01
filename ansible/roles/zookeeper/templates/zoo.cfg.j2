@@ -1,8 +1,0 @@
-tickTime=2000
-dataDir={{ data_dir }}
-clientPort=2181
-initLimit=5
-syncLimit=2
-{% for server in servers %}
-  server.{{ server.id }}={{ server.host }}:2888:3888
-{% endfor %}
