@@ -4,7 +4,6 @@
 - name: Add mesosphere repo
   apt_repository: repo='deb http://repos.mesosphere.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }} main' state=present update_cache=yes
 
-- name: Install mesosphere
-  apt: pkg=mesosphere state=installed
+- name: Install packages
+  apt: name=mesos,marathon,python-pip,python-dev,chronos,docker update_cache=yes
 
-  

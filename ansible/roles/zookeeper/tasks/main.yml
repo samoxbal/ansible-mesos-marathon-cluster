@@ -1,7 +1,6 @@
 ---
 - name: Apt install required system packages.
   apt: pkg={{ item }} state=installed
-  tags: bootstrap
   with_items:
     - zookeeper
     - zookeeperd
@@ -15,6 +14,10 @@
 - name: Overwrite default config file
   template: src=zk_conf.j2 dest=/etc/zookeeper/conf/zoo.cfg
   notify: Restart zookeeper
+
+- name: Install master zookeeper adresses
+  template: src=zk_master_mesos.j2 dest=/etc/mesos/zk
+  when: node
 
 - name: Start zookeeper
   service: name=zookeeper state=started enabled=yes
