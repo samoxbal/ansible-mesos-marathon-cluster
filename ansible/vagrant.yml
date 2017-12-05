@@ -10,16 +10,12 @@
   remote_user: vagrant
   become: yes
   become_method: sudo
-  vars:
-    master: true
   roles:
-    - zookeeper
-    - mesos
-    - marathon
+    - master
 
 - hosts: nodes
   remote_user: vagrant
   become: yes
   become_method: sudo
-  vars:
-    node: true
+  roles:
+    - node

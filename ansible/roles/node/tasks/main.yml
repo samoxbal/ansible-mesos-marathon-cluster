@@ -17,3 +17,17 @@
 - name: Install master zk adresses
   template: src=zk_master_mesos.j2 dest=/etc/mesos/zk
 
+- name: Stop zookeeper
+  service: name=zookeeper state=stopped
+
+- name: Disable zookeeper
+  shell: sh -c "echo manual > /etc/init/zookeeper.override"
+
+- name: Stop mesos-master
+  service: name=mesos-master state=stopped
+
+- name: Disable mesos-master
+  shell: sh -c "echo manual > /etc/init/mesos-master.override"
+
+- name: Restart mesos-slave
+  service: name=mesos-slave state=restarted enabled=yes
