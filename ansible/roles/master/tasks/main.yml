@@ -21,7 +21,7 @@
   template: src=zookeeper_conf.j2 dest=/etc/zookeeper/conf/zoo.cfg
 
 - name: Configure zookeeper ID
-  shell: sudo -u zookeeper zookeeper-server-initialize --myid={{ zoo_myid }}
+  shell: echo "{{ zoo_myid }}" | sudo tee /etc/zookeeper/conf/myid
 
 - name: Configure containerizers
   lineinfile: dest=/etc/mesos-slave/containerizers create=yes line="docker,mesos"
@@ -41,5 +41,6 @@
 - name: Start chronos
   service: name=chronos state=started enabled=yes
 
-- name: Start docker
-  service: name=docker state=started enabled=yes
+- name: Install Python Docker
+  pip:
+    name: docker-py

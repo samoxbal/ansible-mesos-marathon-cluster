@@ -3,6 +3,7 @@
 Start
 -----
     # при первом запуске выполнится provision
+    $ vagrant plugin install vagrant-hostsupdater // необходимо установить плагин
     $ vagrant up
 
 Provision
