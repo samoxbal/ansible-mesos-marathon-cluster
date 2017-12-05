@@ -1,9 +1,0 @@
-- name: Add apt-key
-  apt_key: id=E56151BF keyserver=keyserver.ubuntu.com state=present
-
-- name: Add mesosphere repo
-  apt_repository: repo='deb http://repos.mesosphere.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }} main' state=present update_cache=yes
-
-- name: Install packages
-  apt: name=mesos,marathon,python-pip,python-dev,chronos,docker update_cache=yes
-

@@ -1,0 +1,45 @@
+---
+- name: Update hosts
+  template: src=hosts.j2 dest=/etc/hosts
+
+- name: Add apt-key
+  apt_key: id=E56151BF keyserver=keyserver.ubuntu.com state=present
+
+- name: Add mesosphere repo
+  apt_repository: repo='deb http://repos.mesosphere.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }} main' state=present update_cache=yes
+
+- name: Install packages
+  apt: name=mesos,marathon,python-pip,python-dev,chronos,docker update_cache=yes
+
+- name: Apt install required system packages.
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - zookeeper
+    - zookeeperd
+
+- name: Setup config for zookeeper
+  template: src=zookeeper_conf.j2 dest=/etc/zookeeper/conf/zoo.cfg
+
+- name: Configure zookeeper ID
+  shell: sudo -u zookeeper zookeeper-server-initialize --myid={{ zoo_myid }}
+
+- name: Configure containerizers
+  lineinfile: dest=/etc/mesos-slave/containerizers create=yes line="docker,mesos"
+
+- name: Restart zookeeper
+  service: name=zookeeper state=restarted enabled=yes
+
+- name: Restart mesos-master
+  service: name=mesos-master state=restarted enabled=yes
+
+- name: Stop mesos-slave
+  service: name=mesos-slave state=stopped enabled=yes
+
+- name: Restart marathon
+  service: name=marathon state=restarted enabled=yes
+
+- name: Start chronos
+  service: name=chronos state=started enabled=yes
+
+- name: Start docker
+  service: name=docker state=started enabled=yes

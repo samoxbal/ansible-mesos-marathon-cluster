@@ -1,0 +1,19 @@
+---
+- name: Update hosts
+  template: src=hosts.j2 dest=/etc/hosts
+
+- name: Add apt-key
+  apt_key: id=E56151BF keyserver=keyserver.ubuntu.com state=present
+
+- name: Add mesosphere repo
+  apt_repository: repo='deb http://repos.mesosphere.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }} main' state=present update_cache=yes
+
+- name: Install packages
+  apt: name=mesos,python-pip,python-dev update_cache=yes
+
+- name: Configure containerizers
+  lineinfile: dest=/etc/mesos-slave/containerizers create=yes line="docker,mesos"
+
+- name: Install master zk adresses
+  template: src=zk_master_mesos.j2 dest=/etc/mesos/zk
+
